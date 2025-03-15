@@ -19,18 +19,18 @@ public class Board {
 		return spaces;
 	}
 	
-	public GamesStatusEnum getStatus() {
+	public GameStatusEnum getStatus() {
 		
 		if (spaces.stream().flatMap(Collection::stream).noneMatch(s -> !s.isFixed() && nonNull(s.getActual()))) {
-			return GamesStatusEnum.NON_STARTED;
+			return GameStatusEnum.NON_STARTED;
 		}
 		
 		return spaces.stream().flatMap(Collection::stream)
-				.anyMatch(s -> isNull(s.getActual())) ? GamesStatusEnum.INCOMPLETE : GamesStatusEnum.COMPLETE;
+				.anyMatch(s -> isNull(s.getActual())) ? GameStatusEnum.INCOMPLETE : GameStatusEnum.COMPLETE;
 	}
 
-	public boolean hasError() {
-		if (getStatus() == GamesStatusEnum.NON_STARTED) return false;
+	public boolean hasErrors() {
+		if (getStatus() == GameStatusEnum.NON_STARTED) return false;
 		
 		return spaces.stream().flatMap(Collection::stream)
 				.anyMatch(s -> nonNull(s.getActual()) && !s.getActual().equals(s.getExpected()));
@@ -58,7 +58,7 @@ public class Board {
 	}
 	
 	public boolean gameIsFinished() {
-		return !hasError() && getStatus() == GamesStatusEnum.COMPLETE;
+		return !hasErrors() && getStatus() == GameStatusEnum.COMPLETE;
 	}
 
 }
